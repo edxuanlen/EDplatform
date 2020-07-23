@@ -1,1 +1,335 @@
+## 数据库
+
+### 数据表
+
+#### user_info 用户信息表
+
+id(PRIMARYKEY), user_id(UNIQUE), username, password, signature 个人签名, phone, mail, 
+birthday, sex, student_certification 学生认证账号, school_name 学校, school_number 学号  create_time, update_time
+last_login 最近登录时间，img_url头像
+```mysql
+create table user_info(
+    id bigint not null auto_increment primary key ,
+    user_id varchar(64) not null unique ,
+    username varchar(32) not null,
+    password varchar(128) not null,
+    signature varchar(128) comment '个性签名',
+    phone varchar(11),
+    mail varchar(140),
+    birthday varchar(20),
+    sex tinyint,
+    school_name varchar(64) comment '学校名称',
+    student_certification tinyint default 0 comment '1为统一注册学生用户',
+    school_number varchar(64) comment '统一注册时提交的学号',
+    img_url varchar(255) comment '头像',
+    last_login varchar(20) comment '最近一次登录时间',
+    state tinyint default 1 comment '账号状态，0为注销，1为激活',
+    create_time datetime,
+    update_time datetime,
+    constraint pk_users primary key clustered (id)
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### black_user_list 黑名单
+
+id, user_id, create_time, update_time, result（留空备用）
+
+```mysql
+create table black_user_list(
+    id bigint not null auto_increment primary key ,
+    user_id varchar(64) not null unique ,
+    result varchar(64),
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### blog_route 博文路由
+
+id(PRIMARYKEY), blog_id(UNIQUE), user_id, create_time, update_time
+
+```mysql
+create table blog_route(
+    id bigint not null auto_increment primary key,
+    blog_id bigint not null UNIQUE,
+    user_id varchar(64) not null,
+    state tinyint not null default 1 comment '1 公开，2 草稿，3 私密, 4 密码, 5 已删除',
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### blog_info 博文信息
+
+id(PRIMARYKEY), blog_id(UNIQUE)，blog_describe 描述，blog_tag 标签，blog_class
+ 分类，blog_content 博文内容, click_times 点击次数, stars 收藏, create_time, update_time
+
+```mysql
+create table blog_info(
+    id bigint not null auto_increment primary key,
+    blog_id bigint not null UNIQUE,
+    blog_describe varchar(64) comment '摘要',
+    blog_type tinyint  default 1 comment '1原创, 2转载',
+    blog_content longtext comment '文章内容',
+    click_times bigint default 0 comment '点击次数',
+    stars bigint comment '收藏',
+    state tinyint not null default 1 comment '1 公开，2 草稿，3 私密, 4 密码, 5 已删除',
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### special_route 专题路由
+
+id, special_id, blog_id, create_time, update_time
+
+```mysql
+create table special_route(
+    id bigint not null auto_increment primary key,
+    special_id bigint not null,
+    blog_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### special_info 专题内容
+
+id, special_id, special_describe, special_tag, special_class,
+stars, create_time, update_time
+
+```mysql
+create table special_info(
+    id bigint not null auto_increment primary key,
+    special_id bigint not null UNIQUE ,
+    special_describe varchar(64) comment '摘要',
+    click_times bigint default 0 comment '点击次数',
+    stars bigint comment '收藏',
+    state tinyint not null default 1 comment '1 公开，2 草稿，3 私密, 4 密码, 5 已删除',
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### tag_info 标签
+
+id, tag_id, tag_name, click_times, create_time, update_time
+
+```mysql
+create table tag_info(
+    id bigint not null auto_increment primary key,
+    tag_id bigint not null UNIQUE ,
+    tag_name varchar(32) not null,
+    click_times bigint default 0,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### blog_tag_route 博客标签路由
+
+id, blog_id, tag_id, create_time, update_time
+
+```mysql
+create table blog_tag_route(
+    id bigint not null auto_increment primary key,
+    blog_id bigint not null,
+    tag_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### special_tag_route 专题标签路由
+
+id, special_id, tag_id, create_time, update_time
+
+```mysql
+create table special_tag_route(
+    id bigint not null auto_increment primary key,
+    special_id bigint not null,
+    tag_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### class_info 分类
+
+```mysql
+create table class_info(
+    id bigint not null auto_increment primary key,
+    class_id bigint not null UNIQUE ,
+    class_name varchar(32) not null,
+    click_times bigint default 0,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### blog_class_route 博客分类路由
+
+id, blog_id, class_id, create_time, update_time
+
+```mysql
+create table blog_class_route(
+    id bigint not null auto_increment primary key,
+    blog_id bigint not null,
+    class_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### special_class_route 专题分类路由
+
+id, special_id, class_id, create_time, update_time
+
+```mysql
+create table special_class_route(
+    id bigint not null auto_increment primary key,
+    special_id bigint not null,
+    class_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### user_star_blog_route 收藏博客
+
+id, user_id, blog_id, create_time, update_time
+
+```mysql
+create table user_star_blog_route(
+    id bigint not null auto_increment primary key,
+    user_id varchar(64) not null ,
+    blog_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### user_star_special_route 收藏专栏
+
+id, user_id, special_id, create_time, update_time
+
+```mysql
+create table user_special_blog_route(
+    id bigint not null auto_increment primary key,
+    user_id varchar(64) not null ,
+    special_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### user_star_comment 点赞评论
+
+id, user_id, comment_id, create
+
+```mysql
+
+create table user_start_comment(
+    id bigint not null auto_increment primary key,
+    user_id varchar(64) not null ,
+    comment_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+
+### blog_comment 评论
+
+id(PRIMARYKEY), comment_id(UNIQUE), pid, blog_id, user_id, comment_content, stars 赞同, create_time, update_time
+
+```mysql
+create table blog_comment(
+    id bigint not null auto_increment primary key,
+    comment_id bigint not null UNIQUE ,
+    blog_id bigint not null ,
+    pid bigint default null,
+    user_id varchar(64),
+    comment_content text not null ,
+    stars bigint comment '点赞',
+    create_time datetime,
+    update_time datetime
+
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### topic 社区话题
+
+id(PRIMARYKEY), topic_id(UNIQUE), topic_name, topic_describe, user_id 创建人, topic_class 话题分类, topic_participation 话题参与度, create_time, update_time
+
+```mysql
+create table topic(
+    id bigint not null auto_increment primary key,
+    topic_id bigint not null unique,
+    topic_describe varchar(140) comment '话题描述',
+    topic_name varchar(32) not null ,
+    user_id varchar(64) not null ,
+    topic_participation bigint not null default 0 comment '话题热度',
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### topic_class_route 话题分类路由
+
+id, topic_id, class_id, create_time, update_time
+
+```mysql
+create table topic_class_route(
+    id bigint not null auto_increment primary key,
+    topic_id bigint not null,
+    class_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+#### topic_tag_route 话题标签路由
+id, topic_id, tag_id, create_time, update_time
+
+```mysql
+create table topic_tag_route(
+    id bigint not null auto_increment primary key,
+    topic_id bigint not null,
+    tag_id bigint not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+### group_info 群组
+
+id(PRIMARYKEY), group_id(UNIQUE), group_name,  group_describe, create_time, update_time
+
+```mysql
+create table group_info(
+    id bigint not null auto_increment primary key,
+    group_id bigint not null unique,
+    group_name varchar(64),
+    group_describe varchar(64),
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
+### user_group_route 
+
+id(PRIMARYKEY), group_id, user_id, create_time, update_time
+
+```sql
+create table user_group_route(
+    id bigint not null auto_increment primary key,
+    group_id bigint not null,
+    user_id varchar(64) not null,
+    create_time datetime,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
+
 ### Sharding
+
