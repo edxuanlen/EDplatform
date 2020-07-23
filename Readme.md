@@ -26,7 +26,6 @@ create table user_info(
     state tinyint default 1 comment '账号状态，0为注销，1为激活',
     create_time datetime,
     update_time datetime,
-    constraint pk_users primary key clustered (id)
 ) ENGINE=InnoDB DEFAULT CHARSET = utf8;
 ```
 
@@ -43,7 +42,18 @@ create table black_user_list(
     update_time datetime
 ) ENGINE=InnoDB DEFAULT CHARSET = utf8;
 ```
+#### relationship_user_list 用户关系表
 
+id(PRIMARYKEY), follow_user_id, follower_user_id, create_time, update_time
+```mysql
+create table relationship_user_list(
+    id bigint not null auto_increment primary key ,
+    follow_user_id varchar(64) not null ,
+    follower_user_id varchar(64) not null ,
+    create_time datetime ,
+    update_time datetime
+) ENGINE=InnoDB DEFAULT CHARSET = utf8;
+```
 #### blog_route 博文路由
 
 id(PRIMARYKEY), blog_id(UNIQUE), user_id, create_time, update_time
