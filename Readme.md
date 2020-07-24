@@ -1,5 +1,20 @@
-## 数据库
+## SpringCloud
 
+### 服务发现Eureka
+
+1.简介
+>Spring Cloud 封装了 Netflix 公司开发的 Eureka 模块来实现服务注册和发现(请对比Zookeeper)。
+ Eureka 采用了 C-S 的设计架构。Eureka Server 作为服务注册功能的服务器，它是服务注册中心。
+ 而系统中的其他微服务，使用 Eureka 的客户端连接到 Eureka Server并维持心跳连接。这样系统的维护人员就可以通过 Eureka Server 来监控系统中各个微服务是否正常运行。SpringCloud 的一些其他模块（比如Zuul）就可以通过 Eureka Server 来发现系统中的其他微服务，并执行相关的逻辑。
+
+- 包含两个组件Eureka Server和Eureka Client
+- 三大角色
+    - Eureka Server 提供服务注册和发现
+    - Service Provider服务提供方将自身服务注册到Eureka，从而使服务消费方能够找到
+    - Service Consumer服务消费方从Eureka获取注册服务列表，从而能够消费服务 
+
+## 数据库
+- 版本:MYSQL 5.7
 ### 数据表
 
 #### user_info 用户信息表
@@ -341,5 +356,5 @@ create table user_group_route(
 ) ENGINE=InnoDB DEFAULT CHARSET = utf8;
 ```
 
-### Sharding
+
 
