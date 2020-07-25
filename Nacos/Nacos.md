@@ -65,3 +65,62 @@ public class PaymentMain9001 {
     }
 }
 ```
+
+### 配置中心
+
+#### pom.xml
+
+```xml
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+</dependency>
+```
+
+#### bootstrap.yml
+
+```yml
+spring:
+  application:
+    name: cloud-nacos-test10001
+
+  cloud:
+    nacos:
+      config:
+        # nacos addr
+        server-addr: 47.102.210.6:8848
+        file-extension: yml
+        # 配置共享
+        # refreshable-dataids:
+        # shared-dataids:
+  
+  profiles:
+    # 选择版本
+    active: test
+
+```
+
+
+#### Nacos Server配置中心
+
+dataId 命名为
+```
+${prefix}-${spring.profile.active}.${file-extension}
+```
+
+#### 应用
+
+```java
+@RestController
+// RefreshScope 实现配置的自动更新
+@RefreshScope
+public class PaymentController {
+    @Value("${server.port}")
+    private String serverPort;
+
+    @GetMapping(value = "/payment/nacos/{id}")
+    public String getPayment(@PathVariable("id") Integer id){
+        return "nacos registry, serverPort: " + serverPort + "id" + id;
+    }
+}
+```

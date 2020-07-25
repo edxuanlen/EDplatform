@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: cloud-nacos-test10001
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 47.102.210.6:8848
+        file-extension: yml
+        # 配置共享
+        # refreshable-dataids:
+        # shared-dataids:
+#        endpoint:
+
+  profiles:
+    active: test
+
