@@ -1,4 +1,5 @@
 ## SpringCloud
+
 ### 新建工程
 1.New project
 
@@ -26,8 +27,60 @@
     - Service Provider服务提供方将自身服务注册到Eureka，从而使服务消费方能够找到
     - Service Consumer服务消费方从Eureka获取注册服务列表，从而能够消费服务 
 
+### 服务调用 负载均衡--Ribbon
+
+![Ribbon README](Ribbon/Ribbon.md)
+
+
 ## 数据库
 - 版本:MYSQL 5.7
+
+### 数据字典
+
+| COLUMN_NAME           | COLUMN_TYPE  | COLUMN_COMMENT                           |
+| :---------------------: | :------------: | :----------------------------------------: |
+| blog_id               | bigint(20)   | 博客唯一id                           |
+| class_id              | bigint(20)   | 分类唯一id                           |
+| comment_id            | bigint(20)   | 评论唯一id                           |
+| pid                   | bigint(20)   | 评论的上级评论id                  |
+| stars                 | bigint(20)   | 点赞                                   |
+| click_times           | bigint(20)   | 点击次数                             |
+| tag_id                | bigint(20)   | 标签唯一id                           |
+| group_id              | bigint(20)   | 群众唯一id                           |
+| special_id            | bigint(20)   | 专栏唯一id                           |
+| topic_id              | bigint(20)   | 专题唯一id                           |
+| topic_participation   | bigint(20)   | 话题热度                             |
+| create_time           | datetime     | 数据创建时间                       |
+| update_time           | datetime     | 数据变更时间                       |
+| blog_content          | longtext     | 文章内容                             |
+| comment_content       | text         | 评论内容                             |
+| blog_type             | tinyint(4)   | 1原创, 2转载                         |
+| state                 | tinyint(4)   | 1 公开，2 草稿，3 私密, 4 密码, 5 已删除 |
+| sex                   | tinyint(4)   | 性别                                   |
+| student_certification | tinyint(4)   | 1为统一注册学生用户             |
+| phone                 | varchar(11)  | 手机号                                |
+| password              | varchar(128) | 密码                                   |
+| signature             | varchar(128) | 个性签名                             |
+| topic_describe        | varchar(140) | 话题描述                             |
+| mail                  | varchar(140) | 邮箱                                   |
+| birthday              | varchar(20)  | 生日                                   |
+| last_login            | varchar(20)  | 最近一次登录时间                 |
+| img_url               | varchar(255) | 头像                                   |
+| class_name            | varchar(32)  | 分类名称                             |
+| tag_name              | varchar(32)  | 标签名称                             |
+| topic_name            | varchar(32)  | 话题名称                             |
+| username              | varchar(32)  | 用户名                                |
+| user_id               | varchar(64)  | 用户唯一id                           |
+| result                | varchar(64)  | 留空备用                             |
+| blog_describe         | varchar(64)  | 摘要                                   |
+| group_name            | varchar(64)  | 组名                                   |
+| group_describe        | varchar(64)  | 群组描述                             |
+| follow_user_id        | varchar(64)  | 关注id                                 |
+| follower_user_id      | varchar(64)  | 被关注id                              |
+| special_describe      | varchar(64)  | 摘要                                   |
+| school_name           | varchar(64)  | 学校名称                             |
+| school_number         | varchar(64)  | 统一注册时提交的学号           |
+
 ### 数据表
 
 #### user_info 用户信息表
@@ -53,7 +106,7 @@ create table user_info(
     last_login varchar(20) comment '最近一次登录时间',
     state tinyint default 1 comment '账号状态，0为注销，1为激活',
     create_time datetime,
-    update_time datetime,
+    update_time datetime
 ) ENGINE=InnoDB DEFAULT CHARSET = utf8;
 ```
 
