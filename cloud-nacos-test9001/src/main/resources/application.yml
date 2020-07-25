@@ -1,0 +1,16 @@
+server:
+  port: 9011
+
+spring:
+  application:
+    name: cloud-nacos-test9001
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.102.210.6:8848
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: '*'
